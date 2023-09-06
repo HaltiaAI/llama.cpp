@@ -198,14 +198,6 @@ struct ggml_metal_context * ggml_metal_init(int n_cb) {
 #undef GGML_METAL_ADD_KERNEL
     }
 
-    fprintf(stderr, "%s: recommendedMaxWorkingSetSize = %8.2f MB\n", __func__, ctx->device.recommendedMaxWorkingSetSize / 1024.0 / 1024.0);
-    fprintf(stderr, "%s: hasUnifiedMemory             = %s\n",       __func__, ctx->device.hasUnifiedMemory ? "true" : "false");
-    if (ctx->device.maxTransferRate != 0) {
-        fprintf(stderr, "%s: maxTransferRate              = %8.2f MB/s\n", __func__, ctx->device.maxTransferRate / 1024.0 / 1024.0);
-    } else {
-        fprintf(stderr, "%s: maxTransferRate              = built-in GPU\n", __func__);
-    }
-
     return ctx;
 }
 
@@ -328,16 +320,6 @@ bool ggml_metal_add_buffer(
 
                 ++ctx->n_buffers;
             }
-        }
-
-        fprintf(stderr, ", (%8.2f / %8.2f)",
-                ctx->device.currentAllocatedSize / 1024.0 / 1024.0,
-                ctx->device.recommendedMaxWorkingSetSize / 1024.0 / 1024.0);
-
-        if (ctx->device.currentAllocatedSize > ctx->device.recommendedMaxWorkingSetSize) {
-            fprintf(stderr, ", warning: current allocated size is greater than the recommended max working set size\n");
-        } else {
-            fprintf(stderr, "\n");
         }
     }
 
@@ -1127,5 +1109,5 @@ void ggml_metal_graph_compute(
             fprintf(stderr, "%s: command buffer %d failed with status %lu\n", __func__, i, status);
             GGML_ASSERT(false);
         }
-    }
+  }
 }
