@@ -218,6 +218,7 @@ struct ggml_metal_context * ggml_metal_init(int n_cb) {
 #undef GGML_METAL_ADD_KERNEL
     }
 
+#ifndef TARGET_OS_IPHONE
     fprintf(stderr, "%s: recommendedMaxWorkingSetSize = %8.2f MB\n", __func__, ctx->device.recommendedMaxWorkingSetSize / 1024.0 / 1024.0);
     fprintf(stderr, "%s: hasUnifiedMemory             = %s\n",       __func__, ctx->device.hasUnifiedMemory ? "true" : "false");
     if (ctx->device.maxTransferRate != 0) {
@@ -225,6 +226,7 @@ struct ggml_metal_context * ggml_metal_init(int n_cb) {
     } else {
         fprintf(stderr, "%s: maxTransferRate              = built-in GPU\n", __func__);
     }
+#endif
 
     return ctx;
 }
@@ -351,6 +353,7 @@ bool ggml_metal_add_buffer(
             }
         }
 
+#ifndef TARGET_OS_IPHONE
         fprintf(stderr, ", (%8.2f / %8.2f)",
                 ctx->device.currentAllocatedSize / 1024.0 / 1024.0,
                 ctx->device.recommendedMaxWorkingSetSize / 1024.0 / 1024.0);
@@ -360,6 +363,7 @@ bool ggml_metal_add_buffer(
         } else {
             fprintf(stderr, "\n");
         }
+#endif
     }
 
     return true;
